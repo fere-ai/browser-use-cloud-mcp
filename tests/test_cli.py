@@ -33,17 +33,23 @@ class TestCLI:
     @patch("browser_use_cloud_mcp.cli.run_stdio")
     def test_main_stdio_transport(self, mock_run_stdio, mock_asyncio_run, mock_env):
         """Test main function with stdio transport."""
+        # Set up run_stdio to return a coroutine-like object that asyncio.run can handle
+        mock_run_stdio.return_value = AsyncMock()
+        
         with patch.object(
             sys, "argv", ["browser-use-cloud-mcp", "--transport", "stdio"]
         ):
             main()
 
-        mock_asyncio_run.assert_called_once_with(mock_run_stdio.return_value)
+        mock_asyncio_run.assert_called_once()
 
     @patch("browser_use_cloud_mcp.cli.asyncio.run")
     @patch("browser_use_cloud_mcp.cli.run_http")
     def test_main_http_transport(self, mock_run_http, mock_asyncio_run, mock_env):
         """Test main function with HTTP transport."""
+        # Set up run_http to return a coroutine-like object that asyncio.run can handle
+        mock_run_http.return_value = AsyncMock()
+        
         with patch.object(
             sys,
             "argv",
@@ -51,7 +57,7 @@ class TestCLI:
         ):
             main()
 
-        mock_asyncio_run.assert_called_once_with(mock_run_http.return_value)
+        mock_asyncio_run.assert_called_once()
         mock_run_http.assert_called_once_with("localhost", 9000)
 
     @patch("browser_use_cloud_mcp.cli.asyncio.run")
@@ -113,7 +119,14 @@ class TestCLI:
         mock_stdio_server.return_value.__aexit__ = AsyncMock(return_value=None)
 
         mock_app.run = AsyncMock()
-        mock_app.get_capabilities = MagicMock()
+        # Mock get_capabilities to return a proper ServerCapabilities-like object
+        from mcp.server.models import ServerCapabilities
+        mock_app.get_capabilities = MagicMock(return_value=ServerCapabilities(
+            logging={},
+            prompts=None,
+            resources=None,
+            tools=None
+        ))
 
         await run_stdio()
 

@@ -87,7 +87,7 @@ class TestCallTool:
     async def test_run_task_success(self, mock_client, sample_run_task_request):
         """Test successful run_task call."""
         # Mock client response
-        mock_response = AsyncMock()
+        mock_response = MagicMock()
         mock_response.model_dump.return_value = {"task_id": "task_123"}
         mock_client.run_task.return_value = mock_response
 
@@ -108,7 +108,7 @@ class TestCallTool:
     async def test_get_task_success(self, mock_client, sample_task_response):
         """Test successful get_task call."""
         # Mock client response
-        mock_response = AsyncMock()
+        mock_response = MagicMock()
         mock_response.model_dump.return_value = sample_task_response
         mock_client.get_task.return_value = mock_response
 
@@ -127,7 +127,7 @@ class TestCallTool:
     async def test_list_tasks_success(self, mock_client):
         """Test successful list_tasks call."""
         # Mock client response
-        mock_response = AsyncMock()
+        mock_response = MagicMock()
         mock_response.model_dump.return_value = {
             "tasks": [],
             "total": 0,
@@ -151,7 +151,7 @@ class TestCallTool:
     async def test_list_tasks_default_params(self, mock_client):
         """Test list_tasks with default parameters."""
         # Mock client response
-        mock_response = AsyncMock()
+        mock_response = MagicMock()
         mock_response.model_dump.return_value = {
             "tasks": [],
             "total": 0,
@@ -171,7 +171,7 @@ class TestCallTool:
     async def test_task_control_actions(self, mock_client, action):
         """Test task control actions."""
         # Mock client response
-        mock_response = AsyncMock()
+        mock_response = MagicMock()
         mock_response.model_dump.return_value = {
             "task_id": "task_123",
             "status": "stopped",
@@ -192,7 +192,7 @@ class TestCallTool:
     async def test_get_task_screenshots(self, mock_client):
         """Test get_task_screenshots call."""
         # Mock client response
-        mock_response = AsyncMock()
+        mock_response = MagicMock()
         mock_response.model_dump.return_value = {"screenshots": ["url1", "url2"]}
         mock_client.get_task_screenshots.return_value = mock_response
 
@@ -210,7 +210,7 @@ class TestCallTool:
     ):
         """Test create_scheduled_task call."""
         # Mock client response
-        mock_response = AsyncMock()
+        mock_response = MagicMock()
         mock_response.model_dump.return_value = {
             "task_id": "scheduled_123",
             "name": "Daily Google Search",
@@ -236,7 +236,7 @@ class TestCallTool:
     async def test_update_scheduled_task(self, mock_client):
         """Test update_scheduled_task call."""
         # Mock client response
-        mock_response = AsyncMock()
+        mock_response = MagicMock()
         mock_response.model_dump.return_value = {
             "task_id": "scheduled_123",
             "name": "Updated Task",
@@ -264,7 +264,7 @@ class TestCallTool:
     async def test_get_user_balance(self, mock_client):
         """Test get_user_balance call."""
         # Mock client response
-        mock_response = AsyncMock()
+        mock_response = MagicMock()
         mock_response.model_dump.return_value = {"balance": 100.50, "currency": "USD"}
         mock_client.get_user_balance.return_value = mock_response
 

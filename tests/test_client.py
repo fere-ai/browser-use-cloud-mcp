@@ -1,6 +1,6 @@
 """Tests for the HTTP client."""
 
-from unittest.mock import AsyncMock
+from unittest.mock import AsyncMock, MagicMock
 
 import httpx
 import pytest
@@ -47,9 +47,9 @@ class TestTaskManagement:
     async def test_run_task(self, client, mock_httpx_client, sample_run_task_request):
         """Test running a task."""
         # Mock response
-        mock_response = AsyncMock()
+        mock_response = MagicMock()
         mock_response.status_code = 200
-        mock_response.json = AsyncMock(return_value={"task_id": "task_123"})
+        mock_response.json.return_value = {"task_id": "task_123"}
         mock_httpx_client.request = AsyncMock(return_value=mock_response)
 
         # Make request
@@ -69,9 +69,9 @@ class TestTaskManagement:
     async def test_get_task(self, client, mock_httpx_client, sample_task_response):
         """Test getting task details."""
         # Mock response
-        mock_response = AsyncMock()
+        mock_response = MagicMock()
         mock_response.status_code = 200
-        mock_response.json = AsyncMock(return_value=sample_task_response)
+        mock_response.json.return_value = sample_task_response
         mock_httpx_client.request = AsyncMock(return_value=mock_response)
 
         # Make request
@@ -88,7 +88,7 @@ class TestTaskManagement:
     async def test_get_task_status(self, client, mock_httpx_client):
         """Test getting task status."""
         # Mock response
-        mock_response = AsyncMock()
+        mock_response = MagicMock()
         mock_response.status_code = 200
         mock_response.json.return_value = {"task_id": "task_123", "status": "running"}
         mock_httpx_client.request.return_value = mock_response
@@ -104,7 +104,7 @@ class TestTaskManagement:
     async def test_list_tasks(self, client, mock_httpx_client):
         """Test listing tasks."""
         # Mock response
-        mock_response = AsyncMock()
+        mock_response = MagicMock()
         mock_response.status_code = 200
         mock_response.json.return_value = {
             "tasks": [],
@@ -130,7 +130,7 @@ class TestTaskManagement:
     async def test_task_control_actions(self, client, mock_httpx_client, action):
         """Test task control actions (stop, pause, resume)."""
         # Mock response
-        mock_response = AsyncMock()
+        mock_response = MagicMock()
         mock_response.status_code = 200
         mock_response.json.return_value = {"task_id": "task_123", "status": "stopped"}
         mock_httpx_client.request.return_value = mock_response
@@ -153,7 +153,7 @@ class TestTaskMedia:
     async def test_get_task_screenshots(self, client, mock_httpx_client):
         """Test getting task screenshots."""
         # Mock response
-        mock_response = AsyncMock()
+        mock_response = MagicMock()
         mock_response.status_code = 200
         mock_response.json.return_value = {"screenshots": ["url1", "url2"]}
         mock_httpx_client.request.return_value = mock_response
@@ -171,7 +171,7 @@ class TestTaskMedia:
     async def test_get_task_gif(self, client, mock_httpx_client):
         """Test getting task GIF."""
         # Mock response
-        mock_response = AsyncMock()
+        mock_response = MagicMock()
         mock_response.status_code = 200
         mock_response.json.return_value = {"gif_url": "https://example.com/task.gif"}
         mock_httpx_client.request.return_value = mock_response
@@ -186,7 +186,7 @@ class TestTaskMedia:
     async def test_get_task_media(self, client, mock_httpx_client):
         """Test getting task media."""
         # Mock response
-        mock_response = AsyncMock()
+        mock_response = MagicMock()
         mock_response.status_code = 200
         mock_response.json.return_value = {"media_files": ["file1.png", "file2.mp4"]}
         mock_httpx_client.request.return_value = mock_response
@@ -207,7 +207,7 @@ class TestScheduledTasks:
     ):
         """Test creating a scheduled task."""
         # Mock response
-        mock_response = AsyncMock()
+        mock_response = MagicMock()
         mock_response.status_code = 200
         mock_response.json.return_value = {
             "task_id": "scheduled_123",
@@ -234,7 +234,7 @@ class TestScheduledTasks:
     async def test_update_scheduled_task(self, client, mock_httpx_client):
         """Test updating a scheduled task."""
         # Mock response
-        mock_response = AsyncMock()
+        mock_response = MagicMock()
         mock_response.status_code = 200
         mock_response.json.return_value = {
             "task_id": "scheduled_123",
@@ -260,7 +260,7 @@ class TestScheduledTasks:
     async def test_delete_scheduled_task(self, client, mock_httpx_client):
         """Test deleting a scheduled task."""
         # Mock response
-        mock_response = AsyncMock()
+        mock_response = MagicMock()
         mock_response.status_code = 200
         mock_response.json.return_value = {"message": "Task deleted successfully"}
         mock_httpx_client.request.return_value = mock_response
@@ -275,7 +275,7 @@ class TestScheduledTasks:
     async def test_list_scheduled_tasks(self, client, mock_httpx_client):
         """Test listing scheduled tasks."""
         # Mock response
-        mock_response = AsyncMock()
+        mock_response = MagicMock()
         mock_response.status_code = 200
         mock_response.json.return_value = {
             "scheduled_tasks": [],
@@ -300,7 +300,7 @@ class TestUserManagement:
     async def test_get_user_balance(self, client, mock_httpx_client):
         """Test getting user balance."""
         # Mock response
-        mock_response = AsyncMock()
+        mock_response = MagicMock()
         mock_response.status_code = 200
         mock_response.json.return_value = {"balance": 100.50, "currency": "USD"}
         mock_httpx_client.request.return_value = mock_response
@@ -316,7 +316,7 @@ class TestUserManagement:
     async def test_get_user_info(self, client, mock_httpx_client):
         """Test getting user information."""
         # Mock response
-        mock_response = AsyncMock()
+        mock_response = MagicMock()
         mock_response.status_code = 200
         mock_response.json.return_value = {"id": 123, "email": "test@example.com"}
         mock_httpx_client.request.return_value = mock_response
@@ -332,7 +332,7 @@ class TestUserManagement:
     async def test_delete_browser_profile(self, client, mock_httpx_client):
         """Test deleting browser profile."""
         # Mock response
-        mock_response = AsyncMock()
+        mock_response = MagicMock()
         mock_response.status_code = 200
         mock_response.json.return_value = {"message": "Profile deleted successfully"}
         mock_httpx_client.request.return_value = mock_response
@@ -351,7 +351,7 @@ class TestHealthCheck:
     async def test_ping(self, client, mock_httpx_client):
         """Test ping endpoint."""
         # Mock response
-        mock_response = AsyncMock()
+        mock_response = MagicMock()
         mock_response.status_code = 200
         mock_response.json.return_value = {"status": "ok"}
         mock_httpx_client.request.return_value = mock_response
@@ -370,7 +370,7 @@ class TestErrorHandling:
     async def test_api_error_handling(self, client, mock_httpx_client):
         """Test API error handling."""
         # Mock error response
-        mock_response = AsyncMock()
+        mock_response = MagicMock()
         mock_response.status_code = 400
         mock_response.text = "Bad Request"
         mock_response.json.return_value = {"detail": "Invalid request"}
