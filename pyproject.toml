@@ -5,11 +5,39 @@ build-backend = "poetry.core.masonry.api"
 [tool.poetry]
 name = "browser-use-cloud-mcp"
 version = "0.1.0"
-description = "MCP Server for Browser Use Cloud API"
-authors = ["fereai.xyz"]
+description = "Model Context Protocol (MCP) server for Browser Use Cloud API - automate web browsing tasks with AI"
+authors = ["Pranav Prakash"]
 license = "MIT"
 readme = "README.md"
+homepage = "https://github.com/fere-ai/browser-use-cloud-mcp"
+repository = "https://github.com/fere-ai/browser-use-cloud-mcp"
+documentation = "https://github.com/fere-ai/browser-use-cloud-mcp#readme"
+keywords = ["mcp", "browser-automation", "ai", "web-scraping", "model-context-protocol", "browser-use-cloud"]
+classifiers = [
+    "Development Status :: 4 - Beta",
+    "Intended Audience :: Developers",
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: OS Independent",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Topic :: Internet :: WWW/HTTP :: Browsers",
+    "Topic :: Software Development :: Libraries :: Python Modules",
+    "Topic :: Scientific/Engineering :: Artificial Intelligence",
+    "Typing :: Typed",
+]
 packages = [{include = "browser_use_cloud_mcp"}]
+include = [
+    "README.md",
+    "LICENSE",
+]
+exclude = [
+    "tests*",
+    ".github*",
+    ".devcontainer*",
+    "*.json",
+]
 
 [tool.poetry.dependencies]
 python = "^3.10"
