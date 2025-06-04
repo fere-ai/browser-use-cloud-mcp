@@ -10,6 +10,7 @@ from .models import (
     CheckUserBalanceResponse,
     ListScheduledTasksResponse,
     ListTasksResponse,
+    LLMModel,
     RunTaskRequest,
     ScheduledTaskRequest,
     ScheduledTaskResponse,
@@ -40,18 +41,31 @@ class BrowserUseCloudClient:
         self,
         api_key: Optional[str] = None,
         base_url: str = "https://api.browser-use.com",
+        default_model: Optional[str] = None,
     ):
         """Initialize the client.
 
         Args:
             api_key: API key for authentication. If not provided, will look for BROWSER_USE_CLOUD_API_KEY env var.
             base_url: Base URL for the API.
+            default_model: Default LLM model to use. If not provided, will look for BROWSER_USE_CLOUD_DEFAULT_MODEL env var.
         """
         self.api_key = api_key or os.getenv("BROWSER_USE_CLOUD_API_KEY")
         if not self.api_key:
             raise ValueError(
                 "API key is required. Set BROWSER_USE_CLOUD_API_KEY environment variable or pass api_key parameter."
             )
+
+        self.default_model = default_model or os.getenv("BROWSER_USE_CLOUD_DEFAULT_MODEL")
+        if self.default_model:
+            # Validate the default model
+            try:
+                LLMModel(self.default_model)
+            except ValueError:
+                valid_models = [model.value for model in LLMModel]
+                raise ValueError(
+                    f"Invalid default model '{self.default_model}'. Valid models are: {', '.join(valid_models)}"
+                )
 
         self.base_url = base_url
         self.client = httpx.AsyncClient(
@@ -105,6 +119,10 @@ class BrowserUseCloudClient:
     # Task Management
     async def run_task(self, request: RunTaskRequest) -> TaskCreatedResponse:
         """Run a browser automation task."""
+        # Apply default model if none specified
+        if not request.llm_model and self.default_model:
+            request.llm_model = LLMModel(self.default_model)
+        
         data = await self._make_request("POST", "/run-task", data=request)
         return TaskCreatedResponse(**data)
 
@@ -166,6 +184,10 @@ class BrowserUseCloudClient:
         self, request: ScheduledTaskRequest
     ) -> ScheduledTaskResponse:
         """Create a scheduled task."""
+        # Apply default model if none specified
+        if not request.llm_model and self.default_model:
+            request.llm_model = LLMModel(self.default_model)
+        
         data = await self._make_request("POST", "/scheduled-task", data=request)
         return ScheduledTaskResponse(**data)
 
@@ -173,6 +195,10 @@ class BrowserUseCloudClient:
         self, task_id: str, request: UpdateScheduledTaskRequest
     ) -> ScheduledTaskResponse:
         """Update a scheduled task."""
+        # Apply default model if none specified
+        if not request.llm_model and self.default_model:
+            request.llm_model = LLMModel(self.default_model)
+        
         data = await self._make_request(
             "PUT", f"/scheduled-task/{task_id}", data=request
         )

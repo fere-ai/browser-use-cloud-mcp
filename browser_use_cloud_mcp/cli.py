@@ -150,6 +150,20 @@ Examples:
         print(error_msg, file=sys.stderr)
         sys.exit(1)
 
+    # Validate default model if provided
+    default_model = os.getenv("BROWSER_USE_CLOUD_DEFAULT_MODEL")
+    if default_model:
+        from .models import LLMModel
+        try:
+            LLMModel(default_model)
+            logger.info(f"Using default model: {default_model}")
+        except ValueError:
+            valid_models = [model.value for model in LLMModel]
+            error_msg = f"Invalid BROWSER_USE_CLOUD_DEFAULT_MODEL '{default_model}'. Valid models are: {', '.join(valid_models)}"
+            logger.error(error_msg)
+            print(error_msg, file=sys.stderr)
+            sys.exit(1)
+
     try:
         if args.transport == "stdio":
             asyncio.run(run_stdio())

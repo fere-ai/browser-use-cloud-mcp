@@ -43,6 +43,28 @@ export BROWSER_USE_CLOUD_API_KEY="your-api-key-here"
 
 Get your API key from [Browser Use Cloud](https://cloud.browser-use.com/).
 
+### Optional: Default LLM Model
+
+You can set a default LLM model that will be used for all tasks when no model is explicitly specified:
+
+```bash
+export BROWSER_USE_CLOUD_DEFAULT_MODEL="gpt-4o"
+```
+
+Valid model options:
+- `gpt-4o`
+- `gpt-4o-mini`
+- `gpt-4.1`
+- `gpt-4.1-mini`
+- `gemini-2.0-flash`
+- `gemini-2.0-flash-lite`
+- `gemini-2.5-flash-preview-04-17`
+- `claude-3-7-sonnet-20250219`
+- `claude-sonnet-4-20250514`
+- `llama-4-maverick-17b-128e-instruct`
+
+When a default model is set, it will be automatically applied to `run_task` and `create_scheduled_task` calls that don't explicitly specify an `llm_model` parameter.
+
 ## Usage
 
 ### Running the Server
@@ -172,6 +194,32 @@ Add this to your Claude Desktop MCP configuration:
     "structured_output_json": "{\"type\": \"object\", \"properties\": {\"headlines\": {\"type\": \"array\", \"items\": {\"type\": \"string\"}}}}",
     "allowed_domains": ["bbc.com", "cnn.com", "reuters.com"],
     "use_adblock": true
+  }
+}
+```
+
+#### Using Default Model vs Explicit Model
+When you have set `BROWSER_USE_CLOUD_DEFAULT_MODEL=gpt-4o`, these two calls are equivalent:
+
+**Without explicit model (uses default):**
+```json
+{
+  "name": "run_task",
+  "arguments": {
+    "task": "Go to google.com and search for 'MCP servers'",
+    "allowed_domains": ["google.com"]
+  }
+}
+```
+
+**With explicit model (overrides default):**
+```json
+{
+  "name": "run_task",
+  "arguments": {
+    "task": "Go to google.com and search for 'MCP servers'",
+    "allowed_domains": ["google.com"],
+    "llm_model": "gpt-4o-mini"
   }
 }
 ```
