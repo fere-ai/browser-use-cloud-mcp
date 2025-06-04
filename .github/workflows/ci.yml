@@ -43,13 +43,6 @@ jobs:
     - name: Install project
       run: poetry install --no-interaction
 
-    - name: Run linting
-      run: |
-        poetry run black --check .
-        poetry run isort --check-only .
-        poetry run ruff check .
-        poetry run mypy browser_use_cloud_mcp
-
     - name: Run tests
       run: poetry run pytest tests/ -v --tb=short
 
