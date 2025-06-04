@@ -1,8 +1,10 @@
 """Real integration tests that test the full MCP server workflow.
 
 These tests can run in two modes:
-1. With mocked responses (for CI/testing)
-2. With real API calls (when BROWSER_USE_CLOUD_API_KEY is set to a valid key)
+1. **Unit test mode**: With mocked responses (for CI/testing) - uses mocks to simulate API responses
+2. **Real integration test mode**: With real API calls when BROWSER_USE_CLOUD_API_KEY is set to a valid key
+
+This file tests the complete workflow including MCP server startup, tool calls, and API interactions.
 """
 
 import asyncio

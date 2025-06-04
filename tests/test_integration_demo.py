@@ -2,7 +2,9 @@
 """
 Integration Demo for Browser Use Cloud MCP Server
 
-This script demonstrates the complete workflow requested:
+This demo script showcases the complete workflow functionality of the MCP server
+in a simplified, easy-to-understand format. It demonstrates:
+
 1. Perform a ping and print the status
 2. Run a task "Find out 5 trending crypto right now"
 3. List all tasks and verify if the task created is in the list
@@ -14,6 +16,8 @@ This script demonstrates the complete workflow requested:
 NOTE: This demo shows the MCP server functioning correctly. With a real Browser Use Cloud
 API key, all operations would complete successfully. With the test API key, we can see
 the server correctly processes requests and attempts to contact the API.
+
+Use `poetry run python tests/test_integration_demo.py` to run this demo.
 """
 
 import asyncio

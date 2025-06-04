@@ -1,4 +1,9 @@
-"""Integration tests to verify the basic functionality."""
+"""Integration tests to verify the basic functionality with mocked dependencies.
+
+These tests validate that all components work together correctly without making
+actual API calls to the Browser Use Cloud service. They use mocks to simulate
+external dependencies.
+"""
 
 import os
 from unittest.mock import MagicMock, patch

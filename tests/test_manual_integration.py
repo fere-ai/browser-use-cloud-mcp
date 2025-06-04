@@ -1,7 +1,9 @@
 #!/usr/bin/env python3
 """Manual integration test script for the Browser Use Cloud MCP Server.
 
-This script demonstrates the full workflow requested by the user:
+This script provides an interactive way to test the complete MCP server workflow
+manually. It demonstrates all 7 steps of the requested workflow:
+
 1. Perform a ping and print the status
 2. Run a task "Find out 5 trending crypto right now"
 3. List all tasks and verify if the task created is in the list
@@ -9,6 +11,9 @@ This script demonstrates the full workflow requested by the user:
 5. Check the status of the task periodically
 6. Log the final status of the task
 7. Check the screenshots of the task (count and print them)
+
+This is intended for manual testing and development verification.
+Use `poetry run python tests/test_manual_integration.py` to run this script.
 """
 
 import asyncio
