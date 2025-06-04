@@ -16,7 +16,7 @@ logger = logging.getLogger(__name__)
 async def run_stdio():
     """Run the server with stdio transport."""
     from mcp.server.stdio import stdio_server
-    
+
     async with stdio_server() as (read_stream, write_stream):
         await app.run(
             read_stream,
@@ -36,11 +36,11 @@ async def run_http(host: str = "localhost", port: int = 8000):
     """Run the server with HTTP transport."""
     try:
         from mcp.server.fastapi import FastAPIServer
-        
+
         fastapi_app = FastAPIServer(app)
-        
+
         import uvicorn
-        
+
         config = uvicorn.Config(
             fastapi_app.app,
             host=host,
@@ -48,12 +48,14 @@ async def run_http(host: str = "localhost", port: int = 8000):
             log_level="info",
         )
         server = uvicorn.Server(config)
-        
+
         logger.info(f"Starting Browser Use Cloud MCP Server on http://{host}:{port}")
         await server.serve()
-        
+
     except ImportError as e:
-        logger.error("HTTP transport requires additional dependencies. Install with: pip install 'browser-use-cloud-mcp[http]'")
+        logger.error(
+            "HTTP transport requires additional dependencies. Install with: pip install 'browser-use-cloud-mcp[http]'"
+        )
         sys.exit(1)
 
 
@@ -70,49 +72,50 @@ Examples:
   %(prog)s --transport http --host 0.0.0.0 --port 8000  # Run with HTTP transport on all interfaces
         """,
     )
-    
+
     parser.add_argument(
         "--transport",
         choices=["stdio", "http"],
         default="stdio",
         help="Transport method to use (default: stdio)",
     )
-    
+
     parser.add_argument(
         "--host",
         default="localhost",
         help="Host to bind to for HTTP transport (default: localhost)",
     )
-    
+
     parser.add_argument(
         "--port",
         type=int,
         default=8000,
         help="Port to bind to for HTTP transport (default: 8000)",
     )
-    
+
     parser.add_argument(
         "--log-level",
         choices=["DEBUG", "INFO", "WARNING", "ERROR"],
         default="INFO",
         help="Log level (default: INFO)",
     )
-    
+
     args = parser.parse_args()
-    
+
     # Set up logging
     logging.basicConfig(
         level=getattr(logging, args.log_level),
         format="%(asctime)s - %(name)s - %(levelname)s - %(message)s",
         stream=sys.stderr,
     )
-    
+
     # Check if API key is available
     import os
+
     if not os.getenv("BROWSER_USE_CLOUD_API_KEY"):
         logger.error("BROWSER_USE_CLOUD_API_KEY environment variable is required")
         sys.exit(1)
-    
+
     try:
         if args.transport == "stdio":
             asyncio.run(run_stdio())

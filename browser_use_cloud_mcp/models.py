@@ -8,7 +8,7 @@ from pydantic import BaseModel
 
 class LLMModel(str, Enum):
     """Available LLM models."""
-    
+
     GPT_4O = "gpt-4o"
     GPT_4O_MINI = "gpt-4o-mini"
     GPT_4_1 = "gpt-4.1"
@@ -23,14 +23,14 @@ class LLMModel(str, Enum):
 
 class ScheduleType(str, Enum):
     """Schedule types for scheduled tasks."""
-    
+
     INTERVAL = "interval"
     CRON = "cron"
 
 
 class TaskStatusEnum(str, Enum):
     """Task status enumeration."""
-    
+
     CREATED = "created"
     RUNNING = "running"
     FINISHED = "finished"
@@ -41,7 +41,7 @@ class TaskStatusEnum(str, Enum):
 
 class RunTaskRequest(BaseModel):
     """Request model for running a task."""
-    
+
     task: str
     secrets: Optional[Dict[str, str]] = None
     allowed_domains: Optional[List[str]] = None
@@ -55,20 +55,20 @@ class RunTaskRequest(BaseModel):
 
 class TaskCreatedResponse(BaseModel):
     """Response model for task creation."""
-    
+
     task_id: str
 
 
 class TaskSimpleResponse(BaseModel):
     """Simple task response model."""
-    
+
     task_id: str
     status: TaskStatusEnum
 
 
 class TaskResponse(BaseModel):
     """Full task response model."""
-    
+
     task_id: str
     status: TaskStatusEnum
     created_at: str
@@ -80,7 +80,7 @@ class TaskResponse(BaseModel):
 
 class TaskStepResponse(BaseModel):
     """Task step response model."""
-    
+
     step_id: str
     step_number: int
     action: str
@@ -90,7 +90,7 @@ class TaskStepResponse(BaseModel):
 
 class TaskBrowserDataResponse(BaseModel):
     """Task browser data response."""
-    
+
     cookies: Optional[List[Dict[str, Any]]] = None
     local_storage: Optional[Dict[str, str]] = None
     session_storage: Optional[Dict[str, str]] = None
@@ -98,25 +98,25 @@ class TaskBrowserDataResponse(BaseModel):
 
 class TaskScreenshotsResponse(BaseModel):
     """Task screenshots response."""
-    
+
     screenshots: List[str]
 
 
 class TaskGifResponse(BaseModel):
     """Task GIF response."""
-    
+
     gif_url: str
 
 
 class TaskMediaResponse(BaseModel):
     """Task media response."""
-    
+
     media_files: List[str]
 
 
 class ScheduledTaskRequest(BaseModel):
     """Request model for creating scheduled task."""
-    
+
     name: str
     task: str
     schedule_type: ScheduleType
@@ -133,7 +133,7 @@ class ScheduledTaskRequest(BaseModel):
 
 class UpdateScheduledTaskRequest(BaseModel):
     """Request model for updating scheduled task."""
-    
+
     name: Optional[str] = None
     task: Optional[str] = None
     schedule_type: Optional[ScheduleType] = None
@@ -150,7 +150,7 @@ class UpdateScheduledTaskRequest(BaseModel):
 
 class ScheduledTaskResponse(BaseModel):
     """Response model for scheduled task."""
-    
+
     task_id: str
     name: str
     task: str
@@ -165,7 +165,7 @@ class ScheduledTaskResponse(BaseModel):
 
 class ListTasksResponse(BaseModel):
     """Response model for listing tasks."""
-    
+
     tasks: List[TaskResponse]
     total: int
     page: int
@@ -174,7 +174,7 @@ class ListTasksResponse(BaseModel):
 
 class ListScheduledTasksResponse(BaseModel):
     """Response model for listing scheduled tasks."""
-    
+
     scheduled_tasks: List[ScheduledTaskResponse]
     total: int
     page: int
@@ -183,14 +183,14 @@ class ListScheduledTasksResponse(BaseModel):
 
 class CheckUserBalanceResponse(BaseModel):
     """Response model for user balance."""
-    
+
     balance: float
     currency: str
 
 
 class ValidationError(BaseModel):
     """Validation error model."""
-    
+
     loc: List[str]
     msg: str
     type: str
@@ -198,5 +198,5 @@ class ValidationError(BaseModel):
 
 class HTTPValidationError(BaseModel):
     """HTTP validation error model."""
-    
+
     detail: List[ValidationError]

@@ -18,11 +18,7 @@ from mcp.types import (
 from pydantic import ValidationError
 
 from .client import BrowserUseCloudClient, BrowserUseCloudError
-from .models import (
-    RunTaskRequest,
-    ScheduledTaskRequest,
-    UpdateScheduledTaskRequest,
-)
+from .models import RunTaskRequest, ScheduledTaskRequest, UpdateScheduledTaskRequest
 
 logger = logging.getLogger(__name__)
 
@@ -125,8 +121,16 @@ async def list_tools() -> ListToolsResult:
                 inputSchema={
                     "type": "object",
                     "properties": {
-                        "page": {"type": "integer", "description": "Page number", "default": 1},
-                        "per_page": {"type": "integer", "description": "Items per page", "default": 10},
+                        "page": {
+                            "type": "integer",
+                            "description": "Page number",
+                            "default": 1,
+                        },
+                        "per_page": {
+                            "type": "integer",
+                            "description": "Items per page",
+                            "default": 10,
+                        },
                     },
                 },
             ),
@@ -211,7 +215,10 @@ async def list_tools() -> ListToolsResult:
                             "description": "Schedule type",
                             "enum": ["interval", "cron"],
                         },
-                        "schedule_value": {"type": "string", "description": "Schedule value"},
+                        "schedule_value": {
+                            "type": "string",
+                            "description": "Schedule value",
+                        },
                         "secrets": {
                             "type": "object",
                             "description": "Dictionary of secrets",
@@ -280,7 +287,10 @@ async def list_tools() -> ListToolsResult:
                             "description": "Schedule type",
                             "enum": ["interval", "cron"],
                         },
-                        "schedule_value": {"type": "string", "description": "Schedule value"},
+                        "schedule_value": {
+                            "type": "string",
+                            "description": "Schedule value",
+                        },
                         "secrets": {
                             "type": "object",
                             "description": "Dictionary of secrets",
@@ -348,8 +358,16 @@ async def list_tools() -> ListToolsResult:
                 inputSchema={
                     "type": "object",
                     "properties": {
-                        "page": {"type": "integer", "description": "Page number", "default": 1},
-                        "per_page": {"type": "integer", "description": "Items per page", "default": 10},
+                        "page": {
+                            "type": "integer",
+                            "description": "Page number",
+                            "default": 1,
+                        },
+                        "per_page": {
+                            "type": "integer",
+                            "description": "Items per page",
+                            "default": 10,
+                        },
                     },
                 },
             ),
@@ -388,147 +406,211 @@ async def call_tool(name: str, arguments: Optional[Dict[str, Any]]) -> CallToolR
                 request = RunTaskRequest(**arguments)
                 result = await client.run_task(request)
                 return CallToolResult(
-                    content=[TextContent(type="text", text=json.dumps(result.model_dump(), indent=2))]
+                    content=[
+                        TextContent(
+                            type="text", text=json.dumps(result.model_dump(), indent=2)
+                        )
+                    ]
                 )
-            
+
             elif name == "get_task":
                 task_id = arguments["task_id"]
                 result = await client.get_task(task_id)
                 return CallToolResult(
-                    content=[TextContent(type="text", text=json.dumps(result.model_dump(), indent=2))]
+                    content=[
+                        TextContent(
+                            type="text", text=json.dumps(result.model_dump(), indent=2)
+                        )
+                    ]
                 )
-            
+
             elif name == "get_task_status":
                 task_id = arguments["task_id"]
                 result = await client.get_task_status(task_id)
                 return CallToolResult(
-                    content=[TextContent(type="text", text=json.dumps(result.model_dump(), indent=2))]
+                    content=[
+                        TextContent(
+                            type="text", text=json.dumps(result.model_dump(), indent=2)
+                        )
+                    ]
                 )
-            
+
             elif name == "list_tasks":
                 page = arguments.get("page", 1)
                 per_page = arguments.get("per_page", 10)
                 result = await client.list_tasks(page, per_page)
                 return CallToolResult(
-                    content=[TextContent(type="text", text=json.dumps(result.model_dump(), indent=2))]
+                    content=[
+                        TextContent(
+                            type="text", text=json.dumps(result.model_dump(), indent=2)
+                        )
+                    ]
                 )
-            
+
             elif name == "stop_task":
                 task_id = arguments["task_id"]
                 result = await client.stop_task(task_id)
                 return CallToolResult(
-                    content=[TextContent(type="text", text=json.dumps(result.model_dump(), indent=2))]
+                    content=[
+                        TextContent(
+                            type="text", text=json.dumps(result.model_dump(), indent=2)
+                        )
+                    ]
                 )
-            
+
             elif name == "pause_task":
                 task_id = arguments["task_id"]
                 result = await client.pause_task(task_id)
                 return CallToolResult(
-                    content=[TextContent(type="text", text=json.dumps(result.model_dump(), indent=2))]
+                    content=[
+                        TextContent(
+                            type="text", text=json.dumps(result.model_dump(), indent=2)
+                        )
+                    ]
                 )
-            
+
             elif name == "resume_task":
                 task_id = arguments["task_id"]
                 result = await client.resume_task(task_id)
                 return CallToolResult(
-                    content=[TextContent(type="text", text=json.dumps(result.model_dump(), indent=2))]
+                    content=[
+                        TextContent(
+                            type="text", text=json.dumps(result.model_dump(), indent=2)
+                        )
+                    ]
                 )
-            
+
             elif name == "get_task_screenshots":
                 task_id = arguments["task_id"]
                 result = await client.get_task_screenshots(task_id)
                 return CallToolResult(
-                    content=[TextContent(type="text", text=json.dumps(result.model_dump(), indent=2))]
+                    content=[
+                        TextContent(
+                            type="text", text=json.dumps(result.model_dump(), indent=2)
+                        )
+                    ]
                 )
-            
+
             elif name == "get_task_gif":
                 task_id = arguments["task_id"]
                 result = await client.get_task_gif(task_id)
                 return CallToolResult(
-                    content=[TextContent(type="text", text=json.dumps(result.model_dump(), indent=2))]
+                    content=[
+                        TextContent(
+                            type="text", text=json.dumps(result.model_dump(), indent=2)
+                        )
+                    ]
                 )
-            
+
             elif name == "get_task_media":
                 task_id = arguments["task_id"]
                 result = await client.get_task_media(task_id)
                 return CallToolResult(
-                    content=[TextContent(type="text", text=json.dumps(result.model_dump(), indent=2))]
+                    content=[
+                        TextContent(
+                            type="text", text=json.dumps(result.model_dump(), indent=2)
+                        )
+                    ]
                 )
-            
+
             elif name == "create_scheduled_task":
                 request = ScheduledTaskRequest(**arguments)
                 result = await client.create_scheduled_task(request)
                 return CallToolResult(
-                    content=[TextContent(type="text", text=json.dumps(result.model_dump(), indent=2))]
+                    content=[
+                        TextContent(
+                            type="text", text=json.dumps(result.model_dump(), indent=2)
+                        )
+                    ]
                 )
-            
+
             elif name == "update_scheduled_task":
                 task_id = arguments.pop("task_id")
                 request = UpdateScheduledTaskRequest(**arguments)
                 result = await client.update_scheduled_task(task_id, request)
                 return CallToolResult(
-                    content=[TextContent(type="text", text=json.dumps(result.model_dump(), indent=2))]
+                    content=[
+                        TextContent(
+                            type="text", text=json.dumps(result.model_dump(), indent=2)
+                        )
+                    ]
                 )
-            
+
             elif name == "delete_scheduled_task":
                 task_id = arguments["task_id"]
                 result = await client.delete_scheduled_task(task_id)
                 return CallToolResult(
-                    content=[TextContent(type="text", text=json.dumps(result, indent=2))]
+                    content=[
+                        TextContent(type="text", text=json.dumps(result, indent=2))
+                    ]
                 )
-            
+
             elif name == "list_scheduled_tasks":
                 page = arguments.get("page", 1)
                 per_page = arguments.get("per_page", 10)
                 result = await client.list_scheduled_tasks(page, per_page)
                 return CallToolResult(
-                    content=[TextContent(type="text", text=json.dumps(result.model_dump(), indent=2))]
+                    content=[
+                        TextContent(
+                            type="text", text=json.dumps(result.model_dump(), indent=2)
+                        )
+                    ]
                 )
-            
+
             elif name == "get_user_balance":
                 result = await client.get_user_balance()
                 return CallToolResult(
-                    content=[TextContent(type="text", text=json.dumps(result.model_dump(), indent=2))]
+                    content=[
+                        TextContent(
+                            type="text", text=json.dumps(result.model_dump(), indent=2)
+                        )
+                    ]
                 )
-            
+
             elif name == "get_user_info":
                 result = await client.get_user_info()
                 return CallToolResult(
-                    content=[TextContent(type="text", text=json.dumps(result, indent=2))]
+                    content=[
+                        TextContent(type="text", text=json.dumps(result, indent=2))
+                    ]
                 )
-            
+
             elif name == "delete_browser_profile":
                 result = await client.delete_browser_profile()
                 return CallToolResult(
-                    content=[TextContent(type="text", text=json.dumps(result, indent=2))]
+                    content=[
+                        TextContent(type="text", text=json.dumps(result, indent=2))
+                    ]
                 )
-            
+
             elif name == "ping":
                 result = await client.ping()
                 return CallToolResult(
-                    content=[TextContent(type="text", text=json.dumps(result, indent=2))]
+                    content=[
+                        TextContent(type="text", text=json.dumps(result, indent=2))
+                    ]
                 )
-            
+
             else:
                 return CallToolResult(
                     content=[TextContent(type="text", text=f"Unknown tool: {name}")],
                     isError=True,
                 )
-    
+
     except ValidationError as e:
         logger.error(f"Validation error in {name}: {e}")
         return CallToolResult(
             content=[TextContent(type="text", text=f"Validation error: {str(e)}")],
             isError=True,
         )
-    
+
     except BrowserUseCloudError as e:
         logger.error(f"API error in {name}: {e}")
         return CallToolResult(
             content=[TextContent(type="text", text=f"API error: {e.message}")],
             isError=True,
         )
-    
+
     except Exception as e:
         logger.error(f"Unexpected error in {name}: {e}", exc_info=True)
         return CallToolResult(
@@ -540,7 +622,7 @@ async def call_tool(name: str, arguments: Optional[Dict[str, Any]]) -> CallToolR
 async def main():
     """Main entry point for the MCP server."""
     from mcp.server.stdio import stdio_server
-    
+
     async with stdio_server() as (read_stream, write_stream):
         await app.run(
             read_stream,

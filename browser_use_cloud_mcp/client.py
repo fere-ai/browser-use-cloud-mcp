@@ -36,17 +36,23 @@ class BrowserUseCloudError(Exception):
 class BrowserUseCloudClient:
     """HTTP client for Browser Use Cloud API."""
 
-    def __init__(self, api_key: Optional[str] = None, base_url: str = "https://api.browser-use.com"):
+    def __init__(
+        self,
+        api_key: Optional[str] = None,
+        base_url: str = "https://api.browser-use.com",
+    ):
         """Initialize the client.
-        
+
         Args:
             api_key: API key for authentication. If not provided, will look for BROWSER_USE_CLOUD_API_KEY env var.
             base_url: Base URL for the API.
         """
         self.api_key = api_key or os.getenv("BROWSER_USE_CLOUD_API_KEY")
         if not self.api_key:
-            raise ValueError("API key is required. Set BROWSER_USE_CLOUD_API_KEY environment variable or pass api_key parameter.")
-        
+            raise ValueError(
+                "API key is required. Set BROWSER_USE_CLOUD_API_KEY environment variable or pass api_key parameter."
+            )
+
         self.base_url = base_url
         self.client = httpx.AsyncClient(
             base_url=base_url,
@@ -69,7 +75,7 @@ class BrowserUseCloudClient:
     ) -> Dict[str, Any]:
         """Make an HTTP request to the API."""
         url = f"/api/v1{endpoint}"
-        
+
         try:
             if data:
                 response = await self.client.request(
@@ -77,7 +83,7 @@ class BrowserUseCloudClient:
                 )
             else:
                 response = await self.client.request(method, url, params=params)
-            
+
             if response.status_code >= 400:
                 error_detail = response.text
                 try:
@@ -90,9 +96,9 @@ class BrowserUseCloudClient:
                     f"API request failed: {error_detail}",
                     status_code=response.status_code,
                 )
-            
+
             return response.json()
-        
+
         except httpx.HTTPError as e:
             raise BrowserUseCloudError(f"HTTP error: {str(e)}")
 
@@ -120,17 +126,23 @@ class BrowserUseCloudClient:
 
     async def stop_task(self, task_id: str) -> TaskSimpleResponse:
         """Stop a running task."""
-        data = await self._make_request("POST", "/stop-task", params={"task_id": task_id})
+        data = await self._make_request(
+            "POST", "/stop-task", params={"task_id": task_id}
+        )
         return TaskSimpleResponse(**data)
 
     async def pause_task(self, task_id: str) -> TaskSimpleResponse:
         """Pause a running task."""
-        data = await self._make_request("POST", "/pause-task", params={"task_id": task_id})
+        data = await self._make_request(
+            "POST", "/pause-task", params={"task_id": task_id}
+        )
         return TaskSimpleResponse(**data)
 
     async def resume_task(self, task_id: str) -> TaskSimpleResponse:
         """Resume a paused task."""
-        data = await self._make_request("POST", "/resume-task", params={"task_id": task_id})
+        data = await self._make_request(
+            "POST", "/resume-task", params={"task_id": task_id}
+        )
         return TaskSimpleResponse(**data)
 
     # Task Media
@@ -150,7 +162,9 @@ class BrowserUseCloudClient:
         return TaskMediaResponse(**data)
 
     # Scheduled Tasks
-    async def create_scheduled_task(self, request: ScheduledTaskRequest) -> ScheduledTaskResponse:
+    async def create_scheduled_task(
+        self, request: ScheduledTaskRequest
+    ) -> ScheduledTaskResponse:
         """Create a scheduled task."""
         data = await self._make_request("POST", "/scheduled-task", data=request)
         return ScheduledTaskResponse(**data)
@@ -159,14 +173,18 @@ class BrowserUseCloudClient:
         self, task_id: str, request: UpdateScheduledTaskRequest
     ) -> ScheduledTaskResponse:
         """Update a scheduled task."""
-        data = await self._make_request("PUT", f"/scheduled-task/{task_id}", data=request)
+        data = await self._make_request(
+            "PUT", f"/scheduled-task/{task_id}", data=request
+        )
         return ScheduledTaskResponse(**data)
 
     async def delete_scheduled_task(self, task_id: str) -> Dict[str, str]:
         """Delete a scheduled task."""
         return await self._make_request("DELETE", f"/scheduled-task/{task_id}")
 
-    async def list_scheduled_tasks(self, page: int = 1, per_page: int = 10) -> ListScheduledTasksResponse:
+    async def list_scheduled_tasks(
+        self, page: int = 1, per_page: int = 10
+    ) -> ListScheduledTasksResponse:
         """List scheduled tasks."""
         params = {"page": page, "per_page": per_page}
         data = await self._make_request("GET", "/scheduled-tasks", params=params)
