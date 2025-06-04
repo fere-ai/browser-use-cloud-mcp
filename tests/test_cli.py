@@ -35,7 +35,7 @@ class TestCLI:
         """Test main function with stdio transport."""
         # Set up run_stdio to return a coroutine-like object that asyncio.run can handle
         mock_run_stdio.return_value = AsyncMock()
-        
+
         with patch.object(
             sys, "argv", ["browser-use-cloud-mcp", "--transport", "stdio"]
         ):
@@ -49,7 +49,7 @@ class TestCLI:
         """Test main function with HTTP transport."""
         # Set up run_http to return a coroutine-like object that asyncio.run can handle
         mock_run_http.return_value = AsyncMock()
-        
+
         with patch.object(
             sys,
             "argv",
@@ -121,12 +121,12 @@ class TestCLI:
         mock_app.run = AsyncMock()
         # Mock get_capabilities to return a proper ServerCapabilities-like object
         from mcp.server.models import ServerCapabilities
-        mock_app.get_capabilities = MagicMock(return_value=ServerCapabilities(
-            logging={},
-            prompts=None,
-            resources=None,
-            tools=None
-        ))
+
+        mock_app.get_capabilities = MagicMock(
+            return_value=ServerCapabilities(
+                logging={}, prompts=None, resources=None, tools=None
+            )
+        )
 
         await run_stdio()
 

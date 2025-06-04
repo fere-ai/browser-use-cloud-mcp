@@ -17,6 +17,7 @@ def FastAPIServer(*args, **kwargs):
     """Dynamically import and create FastAPIServer instance."""
     try:
         from mcp.server.fastapi import FastAPIServer as _FastAPIServer
+
         return _FastAPIServer(*args, **kwargs)
     except ImportError as e:
         raise ImportError("No module named 'mcp.server.fastapi'") from e
@@ -26,6 +27,7 @@ def stdio_server():
     """Dynamically import and return stdio_server."""
     try:
         from mcp.server.stdio import stdio_server as _stdio_server
+
         return _stdio_server()
     except ImportError as e:
         raise ImportError("No module named 'mcp.server.stdio'") from e
@@ -33,12 +35,15 @@ def stdio_server():
 
 class UvicornImporter:
     """Lazy importer for uvicorn to allow testing."""
+
     def __getattr__(self, name):
         try:
             import uvicorn as _uvicorn
+
             return getattr(_uvicorn, name)
         except ImportError as e:
             raise ImportError("No module named 'uvicorn'") from e
+
 
 uvicorn = UvicornImporter()
 
