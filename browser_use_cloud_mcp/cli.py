@@ -50,6 +50,8 @@ uvicorn = UvicornImporter()
 
 async def run_stdio():
     """Run the server with stdio transport."""
+    from mcp.types import ServerCapabilities, ToolsCapability
+    
     async with stdio_server() as (read_stream, write_stream):
         await app.run(
             read_stream,
@@ -57,9 +59,8 @@ async def run_stdio():
             InitializationOptions(
                 server_name="browser-use-cloud-mcp",
                 server_version="0.1.0",
-                capabilities=app.get_capabilities(
-                    notification_options=None,
-                    experimental_capabilities=None,
+                capabilities=ServerCapabilities(
+                    tools=ToolsCapability()
                 ),
             ),
         )
